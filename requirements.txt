@@ -1,0 +1,7 @@
+# sudo apt-get install python3-opencv
+# sudo apt install tesseract-ocr
+opencv
+m3u8
+streamlink
+tqdm
+pytesseract
