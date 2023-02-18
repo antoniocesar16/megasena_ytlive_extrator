@@ -134,6 +134,12 @@ while True:
         break
     
     frame = frame[849:1030]
+    # resize
+    height, width, layers = frame.shape
+    width = int((width / 100 ) * 30)
+    height = int((height / 100 ) * 30)
+    frame = cv2.resize(frame, (width, height))
+    
     rgb = get_rgb(frame)
     print(rgb)
     text = get_text_frame_cv2(frame)
