@@ -4,6 +4,7 @@ import urllib
 import m3u8
 import streamlink
 import subprocess
+import yt_dlp
 from extractor import get_text_frame_cv2, get_rgb, get_game_type
 from datetime import datetime, timedelta
 from tqdm import tqdm_notebook as tqdm
@@ -32,16 +33,29 @@ class Stream():
 class FrameExtractor():
     def __init__(self, url) -> None:
         self.url = url
+        self.ydl_opts = { 
+        'format': 'bestaudio/best',
+        'outtmpl': '%(title)s.%(ext)s', # You can change the PATH as you want
+        'download_archive': 'downloaded.txt',
+        'noplaylist': True,   
+        'quiet': True,
+        'no_warnings': True,
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        # 'progress_hooks': [hook]
+        }
 
-    def extractor(self):
+
+    def __stream_extractor(self, url):
         stream = Stream()
         best_url = stream.get_stream_best_url(url)
-        print(best_url.args["url"])
 
-        #m3u8_obj = m3u8.load(best_url.args['url']) load m3u8
-        capture = cv2.VideoCapture(best_url.args["url"])
-        # capture = cv2.VideoCapture("./videos/cut.mp4")
-
+        # m3u8_obj = m3u8.load(best_url.args['url']) load m3u8
+        # capture = cv2.VideoCapture(best_url.args["url"])
+        capture = cv2.VideoCapture("./videos/cut.mp4")
         while True:
             is_read, frame = capture.read()
             if not is_read:
@@ -60,8 +74,7 @@ class FrameExtractor():
             if(game_type):
                 text = get_text_frame_cv2(frame)
                 print(text)
-            # só iremos analisar se a linha inferior que indica o tipo de sorteio for de acordo com a cor que queremos!
-            # print(text) 
+                
             cv2.imwrite(os.path.join(f"./video-opencv/", f"frame.jpg"), frame) # save file in some path
 
 
@@ -81,7 +94,3 @@ class FrameExtractor():
 url = "https://www.youtube.com/watch?v=21X5lGlDOfg"
 frame = FrameExtractor(url)
 frame.extractor()
-
-# dl_stream(url,"file", 10) # 30s
-# subprocess.run(['ffmpeg', '-i', 'file.ts', 'video.mp4', '-y']) # convert from mp4
-# image_frame_mp4("video.mp4")
