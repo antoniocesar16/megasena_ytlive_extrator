@@ -1,1 +1,6 @@
 video-opencv
+videos
+anotações.txt
+*.ts
+*.mp4
+*.png
