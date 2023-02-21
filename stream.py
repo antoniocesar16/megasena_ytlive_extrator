@@ -65,6 +65,18 @@ class FrameExtractor():
             cv2.imwrite(os.path.join(f"./video-opencv/", f"frame.jpg"), frame) # save file in some path
 
 
+    def extractor(self):
+        url = self.url
+        info = self.info(url, False)
+        is_live = info["is_live"]
+        if(is_live):
+            self.__stream_extractor(url)
+    
+
+    def info(self, video_url, download=False):
+        with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
+             return ydl.extract_info(video_url, download=download)
+
 
 url = "https://www.youtube.com/watch?v=21X5lGlDOfg"
 frame = FrameExtractor(url)
