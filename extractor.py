@@ -55,9 +55,3 @@ def euclidean_distance(color1, color2):
     r1, g1, b1 = color1
     r2, g2, b2 = color2
     return math.sqrt((r2 - r1) ** 2 + (g2 - g1) ** 2 + (b2 - b1) ** 2)
-
-
-#type = get_type("result.jpg")
-#split_image('./video-opencv/frame2.jpg')
-#text = get_text_frame_cv2('./video-opencv/frame.jpg')
-#print(text)
