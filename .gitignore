@@ -5,3 +5,4 @@ anotações.txt
 *.mp4
 *.png
 auxiliar/*
+__pycache__

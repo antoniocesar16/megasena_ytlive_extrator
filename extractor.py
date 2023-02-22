@@ -19,7 +19,7 @@ def get_text_images_path(path):
         
 
 def get_text_frame_cv2(frame) -> str:
-        image_text = pytesseract.image_to_string(frame, config=r'--oem 1 --psm 7 --dpi 70').strip()
+        image_text = pytesseract.image_to_string(frame, config=r'--oem 1 --psm 7 --dpi 70')
         return image_text
 
 def split_image(img):
