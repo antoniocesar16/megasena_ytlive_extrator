@@ -14,12 +14,12 @@ def get_text_images_path(path):
     """
     for i in os.listdir(path):
         image_location = path + "/" + i
-        image_text = pytesseract.image_to_string(image_location)
+        image_text = pytesseract.image_to_string(image_location, config=r'--oem 1 --psm 7 --dpi 70').strip()
         print(image_text)
         
 
-def get_text_frame_cv2(frame):
-        image_text = pytesseract.image_to_string(frame, config=r'--oem 1 --psm 7 --dpi 70')
+def get_text_frame_cv2(frame) -> str:
+        image_text = pytesseract.image_to_string(frame, config=r'--oem 1 --psm 7 --dpi 70').strip()
         return image_text
 
 def split_image(img):
@@ -30,7 +30,7 @@ def split_image(img):
 def get_rgb(image_data):
     cv2.imwrite("./tmp.jpg", image_data)
     im = Image.open("./tmp.jpg")
-    #im = Image.open(stream)
+    #im = Image.open(stream) 2265635207
     rgb = im.convert('RGB') # get three R G B values
     RGB = rgb.getpixel((1, 1))
     return RGB
@@ -55,3 +55,6 @@ def euclidean_distance(color1, color2):
     r1, g1, b1 = color1
     r2, g2, b2 = color2
     return math.sqrt((r2 - r1) ** 2 + (g2 - g1) ** 2 + (b2 - b1) ** 2)
+
+image_text = pytesseract.image_to_string("./video-opencv/frame_.jpg", config=r'--oem 1 --psm 7 --dpi 70').strip()
+print(image_text)

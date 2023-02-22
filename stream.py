@@ -5,6 +5,7 @@ import m3u8
 import streamlink
 import subprocess
 import yt_dlp
+import re
 from extractor import get_text_frame_cv2, get_rgb, get_game_type
 from datetime import datetime, timedelta
 from tqdm import tqdm_notebook as tqdm
@@ -55,7 +56,7 @@ class FrameExtractor():
 
         # m3u8_obj = m3u8.load(best_url.args['url']) load m3u8
         # capture = cv2.VideoCapture(best_url.args["url"])
-        capture = cv2.VideoCapture("./videos/cut.mp4")
+        capture = cv2.VideoCapture("./videos/output.mp4")
         while True:
             is_read, frame = capture.read()
             if not is_read:
@@ -73,17 +74,17 @@ class FrameExtractor():
             game_type = get_game_type(rgb)
             if(game_type):
                 text = get_text_frame_cv2(frame)
-                print(text)
-                
+                string = re.sub("[^0-9]", "", text)
+                print("filtado: " + string + "\noriginal: " + text)
             cv2.imwrite(os.path.join(f"./video-opencv/", f"frame.jpg"), frame) # save file in some path
 
 
     def extractor(self):
         url = self.url
-        info = self.info(url, False)
+        info = self.info(url)
         is_live = info["is_live"]
-        if(is_live):
-            self.__stream_extractor(url)
+        #if(is_live):
+        self.__stream_extractor(url)
     
 
     def info(self, video_url, download=False):
